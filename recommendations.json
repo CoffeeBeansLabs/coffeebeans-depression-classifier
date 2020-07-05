@@ -1,0 +1,71 @@
+{
+	"Extreme": {
+		"Self": ["seek professional help",
+			"Links to medical helplines - Fortis Exam Helpline - +918376804102, NIMHANS-   080 46110007",
+			"set boundaries"
+		],
+		"Family": [
+			"Be an active listener",
+			"Lead by example",
+			"Encourage activity",
+			"start conversations like : I have been feeling concerned about you lately",
+			"Start conversations like : Recently, I have noticed some differences in you and wondered how you are doing",
+			"Say : You’re not alone. I’m here for you during this tough time.",
+			"Say : Even if I’m not able to understand exactly how you feel, I care about you and want to help."
+		],
+		"SocialMedia": ["Link to motivational reads",
+			"Links to How To",
+			"Links to medical helplines"
+		]
+	},
+	"Medium": {
+		"Self": [
+			"Aim for eight hours of sleep",
+			"Build a routine",
+			"Keep stress in check",
+			"Spend some time in nature",
+			"List what you like about yourself"
+		],
+
+		"Family": [
+			"Be an active listener",
+			"start conversations like : I have been feeling concerned about you lately",
+			"Start conversations like : Recently, I have noticed some differences in you and wondered how you are doing",
+			"Say : You’re not alone. I’m here for you during this tough time.",
+			"Say : Even if I’m not able to understand exactly how you feel, I care about you and want to help.",
+			"DON'T say : Try to look on the brighter side",
+			"DON't say : Why do you want to die when you have so much to live for?"
+		],
+
+		"SocialMedia": [
+			"Link to motivational reads",
+			"Ads of Playo",
+			"Ads to BookMyShow",
+			"Ads to vacation and feel good events",
+			"Personalised ads based on hobbies and interests"
+		]
+	},
+	"Low": {
+		"Self": [
+			"Have lunch or coffee with a friend",
+			"Talk to one person about your feelings",
+			"Take care of a few small tasks",
+			"Play with a pet",
+			"Aim for eight hours of sleep",
+			"Keep stress in check"
+		],
+		"Family": [
+			"Be an active listener",
+			"start conversations like : I have been feeling concerned about you lately",
+			"Start conversations like : Recently, I have noticed some differences in you and wondered how you are doing",
+			"Say : You’re not alone. I’m here for you during this tough time.",
+			"Say : Even if I’m not able to understand exactly how you feel, I care about you and want to help.",
+			"DON'T say : Try to look on the brighter side",
+			"DON't say : Why do you want to die when you have so much to live for?"
+		],
+		"SocialMedia": [
+			"Ads to motivations reads",
+			"Personalised ads based on hobbies and interests "
+		]
+	}
+}

@@ -1,27 +1,33 @@
 import warnings
 warnings.filterwarnings("ignore", category=FutureWarning)
 
-from flask import Flask, request, jsonify
-app = Flask(__name__)
-
-import tensorflow as tf
-import tensorflow_hub as hub
-
-import bert
 from tensorflow.keras.models import Model, load_model, model_from_json
+from emot.emo_unicode import UNICODE_EMO, EMOTICONS
+from flask import Flask, request, jsonify
+import tensorflow_hub as hub
+import tensorflow as tf
 from tqdm import tqdm
 import numpy as np
+import bert
+import json
+import re
+
+
+
+
+
+app = Flask(__name__)
 
 
 
 class DepressionClassifier:
 
     def __init__(self):
+
+        self.recommendation = json.loads(open("/Users/karthikr/Documents/projects/hackathon/depression-classifier/recommendations.json").read()) 
         self.bert_layer = hub.KerasLayer("https://tfhub.dev/tensorflow/bert_en_uncased_L-12_H-768_A-12/1",
                                          trainable=True)
-
         self.tokens_count = 256
-
         # initializing bert layer
         self.input_word_id = tf.keras.layers.Input(shape=(self.tokens_count,),
                                                    dtype=tf.int32,
@@ -112,32 +118,59 @@ class DepressionClassifier:
         # self.model = load_model('/Users/karthikr/Documents/projects/hackathon/depression-classifier/hackathon_9769.hdf5',
         #                                                              custom_objects={'KerasLayer': hub.KerasLayer})
         self.model = load_model('/Users/karthikr/Documents/projects/hackathon/depression-classifier/cp_18kmanual-0001-0.06.ckpt')
-                                                                            
 
+    def convert_emojis(self):
+        for emot in UNICODE_EMO:
+            text = self.eval_text.replace(emot, "_".join(UNICODE_EMO[emot].replace(",","").replace(":","").split()))
+        self.eval_text = text
+
+                                                                            
     def preprocess_eval_text(self):
+        self.convert_emojis()
         self.eval_text_array = self.create_input_array([self.eval_text])
+
 
     def predict(self):
         self.preprocess_eval_text()
         pred = self.model.predict(self.eval_text_array)[0]
         return pred[0]
 
+    def get_recommendation(self, pred):
+        if 0.5 < pred < 0.6:
+            return self.recommendation['Low']
+
+        elif 0.6 < pred < 0.8:
+            return self.recommendation['Medium']
+
+        elif 0.8 < pred:
+            return self.recommendation['Extreme']
+
+
     def main(self, text):
         self.eval_text = text
 
         if len(self.eval_text) > 5:
             pred = self.predict()
+            recs = self.get_recommendation(pred)
+
             if pred > 0.5:
                 return jsonify({"text_input": self.eval_text,
                                    "prediction_prob": str(pred),
-                                   "prediction_label": "Depressed"})
+                                   "prediction_label": "Depressed",
+                                   "recommnendation": recs})
             else:
                 return jsonify({"text_input": self.eval_text,
                                    "prediction_prob": str(pred),
-                                   "prediction_label": "Not Depressed"})
+                                   "prediction_label": "Not Depressed", 
+                                   "recommnendation": recs})
 
         return jsonify({"text_input": self.eval_text,
                         "error": "Send a valid input text"})
+
+
+
+
+
 
 dp_classifier = DepressionClassifier()
 
