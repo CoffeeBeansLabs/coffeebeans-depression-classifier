@@ -2,7 +2,6 @@ import warnings
 warnings.filterwarnings("ignore", category=FutureWarning)
 
 from tensorflow.keras.models import Model, load_model, model_from_json
-from emot.emo_unicode import UNICODE_EMO, EMOTICONS
 from flask import Flask, request, jsonify
 import tensorflow_hub as hub
 import tensorflow as tf
@@ -117,20 +116,10 @@ class DepressionClassifier:
     def load_trained_model(self):
         # self.model = load_model('/Users/karthikr/Documents/projects/hackathon/depression-classifier/hackathon_9769.hdf5',
         #                                                              custom_objects={'KerasLayer': hub.KerasLayer})
-        # self.model = load_model('/Users/karthikr/Documents/projects/hackathon/depression-classifier/cp_18kmanual-0001-0.06.ckpt')
-        self.model = load_model('/Users/karthikr/Documents/projects/hackathon/depression-classifier/cp_emo_18kmanual-0004-0.02.ckpt')
+        self.model = load_model('/Users/karthikr/Documents/projects/hackathon/depression-classifier/cp_18kmanual-0001-0.06.ckpt')
 
-
-        
-
-    def convert_emojis(self):
-        for emot in UNICODE_EMO:
-            text = self.eval_text.replace(emot, "_".join(UNICODE_EMO[emot].replace(",","").replace(":","").split()))
-        self.eval_text = text
-
-                                                                            
+                                                                      
     def preprocess_eval_text(self):
-        self.convert_emojis()
         self.eval_text_array = self.create_input_array([self.eval_text])
 
 
