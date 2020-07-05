@@ -117,7 +117,11 @@ class DepressionClassifier:
     def load_trained_model(self):
         # self.model = load_model('/Users/karthikr/Documents/projects/hackathon/depression-classifier/hackathon_9769.hdf5',
         #                                                              custom_objects={'KerasLayer': hub.KerasLayer})
-        self.model = load_model('/Users/karthikr/Documents/projects/hackathon/depression-classifier/cp_18kmanual-0001-0.06.ckpt')
+        # self.model = load_model('/Users/karthikr/Documents/projects/hackathon/depression-classifier/cp_18kmanual-0001-0.06.ckpt')
+        self.model = load_model('/Users/karthikr/Documents/projects/hackathon/depression-classifier/cp_emo_18kmanual-0004-0.02.ckpt')
+
+
+        
 
     def convert_emojis(self):
         for emot in UNICODE_EMO:
@@ -149,7 +153,8 @@ class DepressionClassifier:
     def main(self, text):
         self.eval_text = text
 
-        if len(self.eval_text) > 5:
+        if not ((self.eval_text == "") | (self.eval_text.isspace())):
+
             pred = self.predict()
             recs = self.get_recommendation(pred)
 
@@ -157,12 +162,12 @@ class DepressionClassifier:
                 return jsonify({"text_input": self.eval_text,
                                    "prediction_prob": str(pred),
                                    "prediction_label": "Depressed",
-                                   "recommnendation": recs})
+                                   "recommendation": recs})
             else:
                 return jsonify({"text_input": self.eval_text,
                                    "prediction_prob": str(pred),
                                    "prediction_label": "Not Depressed", 
-                                   "recommnendation": recs})
+                                   "recommendation": "None"})
 
         return jsonify({"text_input": self.eval_text,
                         "error": "Send a valid input text"})
