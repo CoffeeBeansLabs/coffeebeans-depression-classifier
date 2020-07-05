@@ -20,7 +20,7 @@ class DepressionClassifier:
         self.bert_layer = hub.KerasLayer("https://tfhub.dev/tensorflow/bert_en_uncased_L-12_H-768_A-12/1",
                                          trainable=True)
 
-        self.tokens_count = 128
+        self.tokens_count = 256
 
         # initializing bert layer
         self.input_word_id = tf.keras.layers.Input(shape=(self.tokens_count,),
@@ -111,7 +111,7 @@ class DepressionClassifier:
     def load_trained_model(self):
         # self.model = load_model('/Users/karthikr/Documents/projects/hackathon/depression-classifier/hackathon_9769.hdf5',
         #                                                              custom_objects={'KerasLayer': hub.KerasLayer})
-        self.model = load_model('/Users/karthikr/Documents/projects/hackathon/depression-classifier/cp-0001-0.21.ckpt')
+        self.model = load_model('/Users/karthikr/Documents/projects/hackathon/depression-classifier/cp_18kmanual-0001-0.06.ckpt')
                                                                             
 
     def preprocess_eval_text(self):
