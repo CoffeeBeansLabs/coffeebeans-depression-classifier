@@ -20,18 +20,18 @@ class DepressionClassifier:
         self.bert_layer = hub.KerasLayer("https://tfhub.dev/tensorflow/bert_en_uncased_L-12_H-768_A-12/1",
                                          trainable=True)
 
-        self.max_sequence_length = 128
+        self.tokens_count = 128
 
         # initializing bert layer
-        self.input_word_id = tf.keras.layers.Input(shape=(self.max_sequence_length,),
+        self.input_word_id = tf.keras.layers.Input(shape=(self.tokens_count,),
                                                    dtype=tf.int32,
                                                    name="input_word_id")
 
-        self.input_mask =  tf.keras.layers.Input(shape=(self.max_sequence_length,),
+        self.input_mask =  tf.keras.layers.Input(shape=(self.tokens_count,),
                                                  dtype=tf.int32,
                                                  name="input_mask")
 
-        self.sequence_id = tf.keras.layers.Input(shape=(self.max_sequence_length,),
+        self.sequence_id = tf.keras.layers.Input(shape=(self.tokens_count,),
                                                  dtype=tf.int32,
                                                  name="sequence_id")
 
@@ -78,16 +78,16 @@ class DepressionClassifier:
         stokens = tokenizer.tokenize(sentence)
         stokens = stokens[:MAX_LEN]
         stokens = ["[CLS]"] + stokens + ["[SEP]"]
-        ids = self.get_ids(stokens, tokenizer, self.max_sequence_length)
-        masks = self.get_masks(stokens, self.max_sequence_length)
-        segments = self.get_segments(stokens, self.max_sequence_length)
+        ids = self.get_ids(stokens, tokenizer, self.tokens_count)
+        masks = self.get_masks(stokens, self.tokens_count)
+        segments = self.get_segments(stokens, self.tokens_count)
         return ids, masks, segments
 
     def create_input_array(self, sentences):
 
         input_ids, input_masks, input_segments = [], [], []
         for sentence in tqdm(sentences, position=0, leave=True):
-            ids, masks, segments = self.create_single_input(sentence, self.max_sequence_length - 2)
+            ids, masks, segments = self.create_single_input(sentence, self.tokens_count - 2)
             input_ids.append(ids)
             input_masks.append(masks)
             input_segments.append(segments)
@@ -106,11 +106,13 @@ class DepressionClassifier:
                           metrics=['accuracy'])
 
     def load_model_weights(self):
-        self.model.load_weights('/Users/karthikr/Documents/projects/hackathon/bert/hackathon_weights_9769.hdf5')
+        self.model.load_weights('/Users/karthikr/Documents/projects/hackathon/depression-classifier/hackathon_weights_9769.hdf5')
 
     def load_trained_model(self):
-        self.model = load_model('/Users/karthikr/Documents/projects/hackathon/bert/cp-0001-0.21.ckpt')
-                                                                     # custom_objects={'KerasLayer': hub.KerasLayer})
+        # self.model = load_model('/Users/karthikr/Documents/projects/hackathon/depression-classifier/hackathon_9769.hdf5',
+        #                                                              custom_objects={'KerasLayer': hub.KerasLayer})
+        self.model = load_model('/Users/karthikr/Documents/projects/hackathon/depression-classifier/cp-0001-0.21.ckpt')
+                                                                            
 
     def preprocess_eval_text(self):
         self.eval_text_array = self.create_input_array([self.eval_text])
@@ -122,7 +124,6 @@ class DepressionClassifier:
 
     def main(self, text):
         self.eval_text = text
-        print(text)
 
         if len(self.eval_text) > 5:
             pred = self.predict()
